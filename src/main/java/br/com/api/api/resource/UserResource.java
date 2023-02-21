@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -27,8 +28,10 @@ public class UserResource {
         return new ResponseEntity<>(service.create(user), CREATED);
     }
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<UserDTO>> findAll(){
+        List<UserDTO> listaUserDTO = service.findAll().stream()
+                .map(x -> mapper.map(x, UserDTO.class)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listaUserDTO);
     }
 
     @GetMapping("/{id}")
