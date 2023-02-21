@@ -19,6 +19,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/user")
 public class UserResource {
 
+    public static final String ID = "/{id}";
     @Autowired
     private ModelMapper mapper;
     @Autowired
@@ -34,18 +35,19 @@ public class UserResource {
         return ResponseEntity.ok().body(listaUserDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(ID)
     public ResponseEntity<Optional<UserDTO>> findById(@PathVariable Integer id){
         Optional<UserDTO> userDTO = service.findById(id).map(x -> mapper.map(x, UserDTO.class));
         return ResponseEntity.ok().body(userDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Optional<User>> uptade(@PathVariable Integer id, @RequestBody User user) {
-        return ResponseEntity.ok().body(service.update(id, user));
+    @PutMapping(ID)
+    public ResponseEntity<Optional<UserDTO>> uptade(@PathVariable Integer id, @RequestBody UserDTO userDTO) {
+        service.update(id,mapper.map(userDTO, User.class));
+        return ResponseEntity.ok().body(Optional.of(userDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(ID)
     public ResponseEntity<?> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.ok().build();
