@@ -25,8 +25,9 @@ public class UserResource {
     @Autowired
     private UserService service;
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user){
-        return new ResponseEntity<>(service.create(user), CREATED);
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDto){
+        service.create(mapper.map(userDto, User.class));
+        return new ResponseEntity<>(userDto, CREATED);
     }
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll(){
