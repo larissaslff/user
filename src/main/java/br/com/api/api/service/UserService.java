@@ -14,4 +14,6 @@ public interface UserService {
     Optional<User> findById(Integer id);
 
     Optional<User> update(Integer id, User user);
+
+    void delete(Integer id);
 }
